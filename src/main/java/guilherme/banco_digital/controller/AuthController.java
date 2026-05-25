@@ -31,35 +31,32 @@ public class AuthController {
     @Autowired
     private JwtService jwtService;
 
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginDTO dto){
-        return ResponseEntity.ok("OK");
-    }
 
-//    @PostMapping("/login")
-//    public ResponseEntity<TokenDTO> login(@RequestBody @Valid LoginDTO dto){
-//
-//        Authentication auth = authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(
-//                        dto.getEmail(),
-//                        dto.getSenha()
-//                )
-//        );
-//
-//        Cliente cliente = clienteRepository.findByEmail(auth.getName())
-//                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-//
-//        String token = jwtService.gerarToken(auth.getName());
-//
-//        TokenDTO response = new TokenDTO(
-//                token,
-//                new UsuarioDTO(
-//                        cliente.getId(),
-//                        cliente.getNome(),
-//                        cliente.getEmail()
-//                )
-//        );
-//
-//        return ResponseEntity.ok(response);
-//    }
+
+    @PostMapping("/login")
+    public ResponseEntity<TokenDTO> login(@RequestBody @Valid LoginDTO dto){
+
+        Authentication auth = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        dto.getEmail(),
+                        dto.getSenha()
+                )
+        );
+
+        Cliente cliente = clienteRepository.findByEmail(auth.getName())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        String token = jwtService.gerarToken(auth.getName());
+
+        TokenDTO response = new TokenDTO(
+                token,
+                new UsuarioDTO(
+                        cliente.getId(),
+                        cliente.getNome(),
+                        cliente.getEmail()
+                )
+        );
+
+        return ResponseEntity.ok(response);
+    }
 }
