@@ -15,7 +15,6 @@ target/
 
 target/
 *.class
-src/main/resources/application.yaml
 
 ### IntelliJ IDEA ###
 .idea
